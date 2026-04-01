@@ -19,11 +19,11 @@ void setup() {
 
 void loop() {}
 
-int analog_read_pin(uint8_t pin) {
+int analog_read_pin(int pin) {
   return analogRead(pin);
 }
 
-void analog_write_pin(uint8_t pin, int value) {
+void analog_write_pin(int pin, int value) {
   analogWrite(pin, value);
 }
 /*
@@ -40,7 +40,7 @@ void set_write_res(int bits) {
   analogWriteResolution(bits);
 }
 
-uint8_t configure_pin(uint8_t PIN_NO, uint8_t DIRECTION) {
+uint8_t configure_pin(int PIN_NO, int DIRECTION) {
   pinMode(PIN_NO, DIRECTION);
   // digitalWrite(PIN_NO, HIGH);
   // delay(500);
@@ -48,13 +48,13 @@ uint8_t configure_pin(uint8_t PIN_NO, uint8_t DIRECTION) {
   return 0;
 }
 
-uint8_t set_led_state(bool state, uint8_t pin) {
+uint8_t set_led_state(bool state, int pin) {
     // LOW state means LED is ON
     digitalWrite(pin, state ? LOW : HIGH);
     return 0;
 }
 
-uint8_t get_pin_state(uint8_t pin) {
+uint8_t get_pin_state(int pin) {
   return digitalRead(pin);
   //bool value = (0!=(*portOutputRegister( digitalPinToPort(pin) ) & digitalPinToBitMask(pin)));
   //return value;
