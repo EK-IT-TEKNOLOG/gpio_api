@@ -42,6 +42,9 @@ def pin_off(pin):
 def analog_read(pin):
     return Bridge.call("analog_read", int(pin))
 
+def analog_write(pin, value):
+    return Bridge.call("analog_write", int(pin), int(value))
+
 def analog_atten(bits):
     return Bridge.call("analog_atten", int(bits))
 
@@ -78,6 +81,7 @@ ui.expose_api("GET", "/pin_on/{pin}", pin_on)
 ui.expose_api("GET", "/pin_off/{pin}", pin_off)
 ui.expose_api("GET", "/pin_status/{pin}", pin_status)
 ui.expose_api("GET", "/analog_read/{pin}", analog_read)
+ui.expose_api("GET", "/analog_write/{pin}/{value}", analog_write)
 ui.expose_api("GET", "/analog_atten/{bits}", analog_atten)
 
 ui.expose_api("GET", "/test/{hest}", test)

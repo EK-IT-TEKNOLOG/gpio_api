@@ -12,6 +12,7 @@ void setup() {
     Bridge.provide("configure_pin", configure_pin);
     Bridge.provide("get_pin_number_from_name", get_pin_number);
     Bridge.provide("analog_read", analog_read_pin);
+    Bridge.provide("analog_write", analog_write_pin);
     Bridge.provide("analog_atten", set_atten);
 }
 
@@ -21,6 +22,9 @@ int analog_read_pin(uint8_t pin) {
   return analogRead(pin);
 }
 
+void analog_write_pin(uint8_t pin, int value) {
+  analogWrite(pin, value);
+}
 /*
 int analog_read_pin(uint8_t pin) {
   return analogReadMilliVolts(pin);
