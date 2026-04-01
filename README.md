@@ -9,3 +9,8 @@ Stop using:
 ```
 arduino-app-cli app stop user:gpio_api
 ```
+
+Set as default (so it starts on boot):
+```
+arduino-app-cli properties set default user:gpio_api
+```

@@ -1,23 +1,58 @@
 #include <Arduino_RouterBridge.h>
+#include <Wire.h>
 
 void setup() {
   // put your setup code here, to run once:
-    //pinMode(LED_BUILTIN, OUTPUT);
-    // Start with the LED OFF (HIGH state of the PIN)
-    //digitalWrite(LED_BUILTIN, HIGH);
+  //pinMode(LED_BUILTIN, OUTPUT);
+  // Start with the LED OFF (HIGH state of the PIN)
+  //digitalWrite(LED_BUILTIN, HIGH);
 
-    Bridge.begin();
-    Bridge.provide("set_led_state", set_led_state);
-    Bridge.provide("get_pin_state", get_pin_state);
-    Bridge.provide("configure_pin", configure_pin);
-    Bridge.provide("get_pin_number_from_name", get_pin_number);
-    Bridge.provide("analog_read", analog_read_pin);
-    Bridge.provide("analog_write", analog_write_pin);
-    Bridge.provide("analog_atten", set_atten);
-    Bridge.provide("analog_write_res", set_write_res);
+  Bridge.begin();
+  Bridge.provide("set_led_state", set_led_state);
+  Bridge.provide("get_pin_state", get_pin_state);
+  Bridge.provide("configure_pin", configure_pin);
+  Bridge.provide("get_pin_number_from_name", get_pin_number);
+  Bridge.provide("analog_read", analog_read_pin);
+  Bridge.provide("analog_write", analog_write_pin);
+  Bridge.provide("analog_atten", set_atten);
+  Bridge.provide("analog_write_res", set_write_res);
+  Bridge.provide("init_i2c", init_i2c);
+  Bridge.provide("start_write_i2c", start_write_i2c);
+  Bridge.provide("end_write_i2c", end_write_i2c);
+  Bridge.provide("byte_write_i2c", byte_write_i2c);
+  Bridge.provide("start_read_i2c", start_read_i2c);
+  Bridge.provide("byte_read_i2c", byte_read_i2c);
 }
 
 void loop() {}
+
+void init_i2c() {
+  Wire.begin(); // I2C in UNO-style headers (D20, D21)
+}
+
+void start_write_i2c(int addr) {
+  Wire.beginTransmission(addr);
+}
+
+void end_write_i2c(int addr) {
+  Wire.endTransmission();
+}
+
+void byte_write_i2c(int b) {
+  Wire.write(b);
+}
+
+void start_read_i2c(int addr, int buflen) {
+  Wire.requestFrom(addr, buflen);
+}
+
+int byte_read_i2c() {
+  if (Wire.available()) {
+    return Wire.read();
+  } else {
+    return -1;
+  }
+}
 
 int analog_read_pin(int pin) {
   return analogRead(pin);

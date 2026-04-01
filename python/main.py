@@ -33,6 +33,28 @@ def analog_atten(bits):
 def analog_write_res(bits):
     return Bridge.call("analog_write_res", int(bits))
 
+def init_i2c():
+    return Bridge.call("init_i2c")
+
+def write_i2c(addr, buf):
+    #TODO Test if buf is needed to convert to bytes
+    #TODO Test if buf is list, if not then raise error
+    try:
+        buf=eval(buf)
+    except:
+        return -1
+    Bridge.call("start_write_i2c", int(addr))
+    for b in buf:
+        Bridge.call("byte_write_i2c", int(b))
+    Bridge.call("end_write_i2c")
+
+def read_i2c(addr, buflen):
+    Bridge.call("start_read_i2c", int(addr), int(buflen))
+    buf = []
+    for i in range(buflen):
+        buf.append(Bridge.call("byte_read_i2c"))
+    return buf
+
 def pin_status(pin):
     #res = Bridge.call("get_pin_state", int(pin))
     #log(f'[+] GOT {res} from pin state on {pin}')
@@ -66,6 +88,9 @@ ui.expose_api("GET", "/analog_read/{pin}", analog_read)
 ui.expose_api("GET", "/analog_write/{pin}/{value}", analog_write)
 ui.expose_api("GET", "/analog_atten/{bits}", analog_atten)
 ui.expose_api("GET", "/analog_write_res/{bits}", analog_write_res)
+ui.expose_api("GET", "/init_i2c", init_i2c)
+ui.expose_api("GET", "/write_i2c/{addr}/{buf}", write_i2c)
+ui.expose_api("GET", "/read_i2c/{addr}/{buflen}", read_i2c)
 
 ui.expose_api("GET", "/test/{hest}", test)
 
