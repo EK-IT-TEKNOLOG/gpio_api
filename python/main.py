@@ -5,6 +5,8 @@ from arduino.app_utils import *
 led_is_on = False
 LOG=True
 
+port_state = {}
+
 def log(msg):
     if LOG:
         print('[+]',msg)
@@ -29,16 +31,21 @@ def toggle_led_state(pin):
 def pin_on(pin):
     log('Setting on')
     Bridge.call("set_led_state", True, int(pin))
+    port_state[pin] = True 
+    #log(port_state)
 
 def pin_off(pin):
     log('Setting off')
     Bridge.call("set_led_state", False, int(pin))
+    port_state[pin] = False
 
 def pin_status(pin):
-    log('Setting off')
-    res = Bridge.call("get_pin_state", int(pin))
-    log(f'[+] GOT {res} from pin state on {pin}')
-    return res
+    #res = Bridge.call("get_pin_state", int(pin))
+    #log(f'[+] GOT {res} from pin state on {pin}')
+    if pin in port_state:
+        return port_state[pin]
+    else:
+        return False
 
 #input = 0
 #output = 1
@@ -46,7 +53,8 @@ def pin_status(pin):
 def configure_pin(pin_no, direction):
     #TODO: Error handling
     a = Bridge.call("configure_pin", int(pin_no), int(direction))
-    print('[+] RES: '+str(a))
+    port_state[pin_no] = False
+    #print('[+] RES: '+str(a))
     return a
 
 def test(hest):
