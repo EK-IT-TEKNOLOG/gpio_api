@@ -58,8 +58,9 @@ def configure_pin(pin_no, direction):
     return a
 
 def test(hest):
-    print('PRINTET HEST '+str(hest)+' '+str(type(hest)))
-    return 'HEST '+str(hest)+' '+str(type(hest))
+    res = Bridge.call("get_pin_number_from_name")
+    #print('PRINTET HEST '+str(hest)+' '+str(type(hest)))
+    return 'HEST '+str(res)+' '+str(type(res))
 
 # Initialize WebUI
 ui = WebUI()
