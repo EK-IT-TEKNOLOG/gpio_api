@@ -14,6 +14,7 @@ void setup() {
     Bridge.provide("analog_read", analog_read_pin);
     Bridge.provide("analog_write", analog_write_pin);
     Bridge.provide("analog_atten", set_atten);
+    Bridge.provide("analog_write_res", set_write_res);
 }
 
 void loop() {}
@@ -33,6 +34,10 @@ int analog_read_pin(uint8_t pin) {
 
 void set_atten(int bits) {
   analogReadResolution(bits);
+}
+
+void set_write_res(int bits) {
+  analogWriteResolution(bits);
 }
 
 uint8_t configure_pin(uint8_t PIN_NO, uint8_t DIRECTION) {

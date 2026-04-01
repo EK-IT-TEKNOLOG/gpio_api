@@ -48,6 +48,9 @@ def analog_write(pin, value):
 def analog_atten(bits):
     return Bridge.call("analog_atten", int(bits))
 
+def analog_write_res(bits):
+    return Bridge.call("analog_write_res", int(bits))
+
 def pin_status(pin):
     #res = Bridge.call("get_pin_state", int(pin))
     #log(f'[+] GOT {res} from pin state on {pin}')
@@ -83,26 +86,9 @@ ui.expose_api("GET", "/pin_status/{pin}", pin_status)
 ui.expose_api("GET", "/analog_read/{pin}", analog_read)
 ui.expose_api("GET", "/analog_write/{pin}/{value}", analog_write)
 ui.expose_api("GET", "/analog_atten/{bits}", analog_atten)
+ui.expose_api("GET", "/analog_write_res/{bits}", analog_write_res)
 
 ui.expose_api("GET", "/test/{hest}", test)
 
 # Start the application
 App.run()
-
-'''
-import time
-
-from arduino.app_utils import App
-
-print("Hello world!")
-
-
-def loop():
-    """This function is called repeatedly by the App framework."""
-    # You can replace this with any code you want your App to run repeatedly.
-    time.sleep(10)
-
-
-# See: https://docs.arduino.cc/software/app-lab/tutorials/getting-started/#app-run
-App.run(user_loop=loop)
-'''
