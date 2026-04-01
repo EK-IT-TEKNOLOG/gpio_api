@@ -39,6 +39,12 @@ def pin_off(pin):
     Bridge.call("set_led_state", False, int(pin))
     port_state[pin] = False
 
+def analog_read(pin):
+    return Bridge.call("analog_read", int(pin))
+
+def analog_atten(bits):
+    return Bridge.call("analog_atten", int(bits))
+
 def pin_status(pin):
     #res = Bridge.call("get_pin_state", int(pin))
     #log(f'[+] GOT {res} from pin state on {pin}')
@@ -71,6 +77,8 @@ ui.expose_api("GET", "/toggle_led/{pin}", toggle_led_state)
 ui.expose_api("GET", "/pin_on/{pin}", pin_on)
 ui.expose_api("GET", "/pin_off/{pin}", pin_off)
 ui.expose_api("GET", "/pin_status/{pin}", pin_status)
+ui.expose_api("GET", "/analog_read/{pin}", analog_read)
+ui.expose_api("GET", "/analog_atten/{bits}", analog_atten)
 
 ui.expose_api("GET", "/test/{hest}", test)
 
