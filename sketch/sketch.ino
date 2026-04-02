@@ -22,9 +22,36 @@ void setup() {
   Bridge.provide("byte_write_i2c", byte_write_i2c);
   Bridge.provide("start_read_i2c", start_read_i2c);
   Bridge.provide("byte_read_i2c", byte_read_i2c);
+
+  Bridge.provide("init_uart", init_uart);
+  Bridge.provide("avaiable_data_uart", avaiable_data_uart);
+  Bridge.provide("read_uart", read_uart);
+  Bridge.provide("write_uart", write_uart);
+  Bridge.provide("deinit_uart", deinit_uart);
 }
 
 void loop() {}
+
+void init_uart(int speed) {
+  Serial1.begin(speed);
+}
+
+bool avaiable_data_uart() {
+  return Serial1.available();
+}
+
+char read_uart() {
+  return Serial1.read();
+}
+
+void write_uart(byte b) {
+  Serial1.write(b);
+  Serial1.flush();
+}
+
+void deinit_uart() {
+  Serial1.end();
+}
 
 void init_i2c() {
   Wire.begin(); // I2C in UNO-style headers (D20, D21)

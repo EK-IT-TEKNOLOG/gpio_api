@@ -78,6 +78,26 @@ def test(hest):
     #print('PRINTET HEST '+str(hest)+' '+str(type(hest)))
     return 'HEST '+str(res)+' '+str(type(res))
 
+def init_uart(speed):
+    Bridge.call("init_uart", int(speed))
+
+def deinit_uart(speed):
+    Bridge.call("deinit_uart")
+
+def avaiable_data_uart():
+    return Bridge.call('avaiable_data_uart')
+
+def read_uart():
+    return Bridge.call('read_uart')
+
+def write_uart(bytes):
+    try:
+        bytes = eval(bytes)
+    except:
+        raise 'Error converting'
+    for b in bytes:
+        Bridge.call('write_uart', int(b))
+
 # Initialize WebUI
 ui = WebUI()
 ui.expose_api("GET", "/configure_pin/{pin_no}/{direction}", configure_pin)
@@ -91,6 +111,12 @@ ui.expose_api("GET", "/analog_write_res/{bits}", analog_write_res)
 ui.expose_api("GET", "/init_i2c", init_i2c)
 ui.expose_api("GET", "/write_i2c/{addr}/{buf}", write_i2c)
 ui.expose_api("GET", "/read_i2c/{addr}/{buflen}", read_i2c)
+
+ui.expose_api("GET", "/init_uart/{speed}", init_uart)
+ui.expose_api("GET", '/avaiable_data_uart', avaiable_data_uart)
+ui.expose_api("GET", "/read_uart", read_uart)
+ui.expose_api("GET", "/write_uart/{bytes}", write_uart)
+ui.expose_api("GET", "/deinit_uart", deinit_uart)
 
 ui.expose_api("GET", "/test/{hest}", test)
 
