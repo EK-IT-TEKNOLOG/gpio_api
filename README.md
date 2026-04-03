@@ -25,3 +25,13 @@ git clone https://github.com/EK-IT-TEKNOLOG/gpio_api.git
 ```
 
 Start the app using the commands above
+
+Clone the python module to use:
+
+```
+cd
+git clone https://github.com/EK-IT-TEKNOLOG/uno_machine.git
+cd uno_machine
+```
+
+Now write your code. See the `test.py` as starting point.
