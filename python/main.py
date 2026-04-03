@@ -105,9 +105,9 @@ def tx_rx_spi(cs_pin, data):
     data = eval(data)
     res = []
     for i in range(len(data)-1):
-        r = Bridge.call('tx_rx_spi', int(cs_pin), data[i], True))
+        r = Bridge.call('tx_rx_spi', int(cs_pin), data[i], True)
         res.append(r)
-    r = Bridge.call('tx_rx_spi', int(cs_pin), data[-1], False))
+    r = Bridge.call('tx_rx_spi', int(cs_pin), data[-1], False)
     res.append(r)
     return res
         
