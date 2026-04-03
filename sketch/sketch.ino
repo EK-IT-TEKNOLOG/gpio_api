@@ -1,5 +1,6 @@
 #include <Arduino_RouterBridge.h>
 #include <Wire.h>
+#include <SPI.h>
 
 void setup() {
   // put your setup code here, to run once:
@@ -31,6 +32,20 @@ void setup() {
 }
 
 void loop() {}
+
+void init_spi(int cs_pin) {
+  pinMode(cs_pin, OUTPUT);
+  digitalWrite(cs_pin, HIGH);
+  SPI.begin();
+}
+
+byte tx_rx_spi(int cs_pin, byte b, bool cont) {
+  digitalWrite(cs_pin, LOW);
+  byte res = SPI.transfer(b);
+  if (!cont)
+    digitalWrite(cs_pin, HIGH);
+  return res;
+}
 
 void init_uart(int speed) {
   Serial1.begin(speed);

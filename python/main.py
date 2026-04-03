@@ -98,6 +98,20 @@ def write_uart(bytes):
     for b in bytes:
         Bridge.call('write_uart', int(b))
 
+def init_spi(cs_pin):
+    Bridge.call('init_spi', int(cs_pin))
+
+def tx_rx_spi(cs_pin, data):
+    data = eval(data)
+    res = []
+    for i in range(len(data)-1):
+        r = Bridge.call('tx_rx_spi', int(cs_pin), data[i], True))
+        res.append(r)
+    r = Bridge.call('tx_rx_spi', int(cs_pin), data[-1], False))
+    res.append(r)
+    return res
+        
+
 # Initialize WebUI
 ui = WebUI()
 ui.expose_api("GET", "/configure_pin/{pin_no}/{direction}", configure_pin)
@@ -117,6 +131,9 @@ ui.expose_api("GET", '/avaiable_data_uart', avaiable_data_uart)
 ui.expose_api("GET", "/read_uart", read_uart)
 ui.expose_api("GET", "/write_uart/{bytes}", write_uart)
 ui.expose_api("GET", "/deinit_uart", deinit_uart)
+
+ui.expose_api("GET", "/init_spi/{cs_pin}", init_spi)
+ui.expose_api("GET", "/tx_rx_spi/{cs_pin}/{data}", tx_rx_spi)
 
 ui.expose_api("GET", "/test/{hest}", test)
 
