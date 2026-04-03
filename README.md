@@ -14,3 +14,14 @@ Set as default (so it starts on boot):
 ```
 arduino-app-cli properties set default user:gpio_api
 ```
+
+# More usage
+
+Clone the repo into the right folder:
+   
+```
+cd ArduinoApps
+git clone https://github.com/EK-IT-TEKNOLOG/gpio_api.git
+```
+
+Start the app using the commands above
