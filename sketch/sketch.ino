@@ -1,6 +1,7 @@
 #include <Arduino_RouterBridge.h>
 #include <Wire.h>
 #include <SPI.h>
+#include "DHT.h"
 
 void setup() {
   // put your setup code here, to run once:
@@ -33,6 +34,30 @@ void setup() {
 
 void loop() {}
 
+//DHT dht = dht11(1,11);
+
+/*
+* Define types of sensors. *
+static const uint8_t DHT11{11};  **< DHT TYPE 11
+static const uint8_t DHT12{12};  **< DHY TYPE 12
+static const uint8_t DHT21{21};  **< DHT TYPE 21 
+static const uint8_t DHT22{22};  **< DHT TYPE 22 
+static const uint8_t AM2301{21}; **< AM2301 *
+*/
+/*
+void init_dht(int pin_no, int dht_type) {
+  dht = dht11(pin_no, dht_type);
+  dht.begin();
+}
+
+float dht_read_temp(int pin_no) {
+  return dht.readTemperature();
+}
+
+float dht_read_hum(int pin_no) {
+  return dht.readHumidity();
+}
+*/
 void init_spi(int cs_pin) {
   pinMode(cs_pin, OUTPUT);
   digitalWrite(cs_pin, HIGH);

@@ -10,5 +10,7 @@ profiles:
       - dependency: ArxTypeTraits (0.3.2)
       - dependency: DebugLog (0.8.4)
       - dependency: MsgPack (0.4.2)
+      - dependency: Adafruit Unified Sensor (1.1.15)
+      - DHT sensor library (1.4.7)
 
 default_profile: default

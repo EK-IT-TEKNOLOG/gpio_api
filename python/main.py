@@ -112,6 +112,15 @@ def tx_rx_spi(cs_pin, data):
     return res
         
 
+def init_dht(pin_no, dht_type):
+    Bridge.call('init_dht', int(pin_no), int(dht_type))
+
+def dht_read_temp(pin_no):
+    Bridge.call('dht_read_temp', int(pin_no))
+
+def dht_read_hum(pin_no):
+    Bridge.call('dht_read_hum', int(pin_no))
+
 # Initialize WebUI
 ui = WebUI()
 ui.expose_api("GET", "/configure_pin/{pin_no}/{direction}", configure_pin)
@@ -134,6 +143,10 @@ ui.expose_api("GET", "/deinit_uart", deinit_uart)
 
 ui.expose_api("GET", "/init_spi/{cs_pin}", init_spi)
 ui.expose_api("GET", "/tx_rx_spi/{cs_pin}/{data}", tx_rx_spi)
+
+ui.expose_api("GET", "/init_dht/{pin_no}/{dht_type}", init_dht)
+ui.expose_api('GET', '/dht_read_temp/{pin_no}', dht_read_temp)
+ui.expose_api('GET', '/dht_read_hum/{pin_no}', dht_read_hum)
 
 ui.expose_api("GET", "/test/{hest}", test)
 
