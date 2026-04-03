@@ -164,24 +164,25 @@ byte tx_rx_spi(int cs_pin, byte b, bool cont) {
 }
 
 void init_uart(int speed) {
-  Serial1.begin(speed);
+  Serial.begin(speed);
+  Serial.flush();
 }
 
 bool avaiable_data_uart() {
-  return Serial1.available();
+  return Serial.available();
 }
 
 char read_uart() {
-  return Serial1.read();
+  return Serial.read();
 }
 
 void write_uart(byte b) {
-  Serial1.write(b);
-  Serial1.flush();
+  Serial.write(b);
+  Serial.flush();
 }
 
 void deinit_uart() {
-  Serial1.end();
+  Serial.end();
 }
 
 void init_i2c() {

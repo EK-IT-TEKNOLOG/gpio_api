@@ -80,6 +80,7 @@ def test(hest):
 
 def init_uart(speed):
     Bridge.call("init_uart", int(speed))
+    return 'OK'
 
 def deinit_uart(speed):
     Bridge.call("deinit_uart")
