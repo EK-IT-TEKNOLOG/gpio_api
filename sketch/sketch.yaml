@@ -12,5 +12,7 @@ profiles:
       - dependency: MsgPack (0.4.2)
       - dependency: Adafruit Unified Sensor (1.1.15)
       - DHT sensor library (1.4.7)
+      - Hashtable (1.0.1)
+      - dependency: SimpleVector (1.0.5)
 
 default_profile: default

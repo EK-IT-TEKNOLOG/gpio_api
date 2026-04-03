@@ -2,6 +2,86 @@
 #include <Wire.h>
 #include <SPI.h>
 #include "DHT.h"
+#include <Hashtable.h>
+
+#define HASH_SIZE 5 //Maxiumum of 5 DHTs
+
+class MyDht {
+  public:
+    MyDht();
+    DHT d;
+};
+
+/* Handle association */
+template<typename hash,typename map>
+class HashType {
+public:
+	HashType(){ reset(); }
+	
+	HashType(hash code,map value):hashCode(code),mappedValue(value){}
+	
+	void reset(){ hashCode = 0; mappedValue = 0; }
+	hash getHash(){ return hashCode; }
+	void setHash(hash code){ hashCode = code; }
+	map getValue(){ return mappedValue; }
+	void setValue(map value){ mappedValue = value; }
+	
+	HashType& operator()(hash code, map value){
+		setHash( code );
+		setValue( value );
+	}
+private:
+	hash hashCode;
+	map mappedValue;
+};
+
+/*
+Handle indexing and searches
+TODO - extend API
+*/
+template<typename hash,typename map>
+class HashMap {
+public:
+	HashMap(HashType<hash,map>* newMap,byte newSize){
+		hashMap = newMap;
+		size = newSize;
+		for (byte i=0; i<size; i++){
+			hashMap[i].reset();
+		}
+	}
+	
+	HashType<hash,map>& operator[](int x){
+		//TODO - bounds
+		return hashMap[x];
+	}
+	
+	byte getIndexOf( hash key ){
+		for (byte i=0; i<size; i++){
+			if (hashMap[i].getHash()==key){
+				return i;
+			}
+		}
+	}
+	map getValueOf( hash key ){
+		for (byte i=0; i<size; i++){
+			if (hashMap[i].getHash()==key){
+				return hashMap[i].getValue();
+			}
+		}
+	}
+	
+	void debug(){
+		for (byte i=0; i<size; i++){
+			Serial.print(hashMap[i].getHash());
+			Serial.print(" - ");
+			Serial.println(hashMap[i].getValue());
+		}
+	}
+
+private:
+	HashType<hash,map>* hashMap;
+	byte size;
+};
 
 void setup() {
   // put your setup code here, to run once:
@@ -34,6 +114,12 @@ void setup() {
 
 void loop() {}
 
+//HashType<int,DHT> hashRawArray[HASH_SIZE]; 
+//HashMap<int,DHT> dhtMap = HashMap<int,DHT>( hashRawArray , HASH_SIZE ); 
+//Hashtable<int, DHT> dhtMap;
+
+void* dht;
+
 //DHT dht = dht11(1,11);
 
 /*
@@ -44,20 +130,25 @@ static const uint8_t DHT21{21};  **< DHT TYPE 21
 static const uint8_t DHT22{22};  **< DHT TYPE 22 
 static const uint8_t AM2301{21}; **< AM2301 *
 */
-/*
+
 void init_dht(int pin_no, int dht_type) {
-  dht = dht11(pin_no, dht_type);
-  dht.begin();
+  DHT d(pin_no, dht_type);
+  d.begin();
+  dht = &d;
+  //dhtMap[0](pin_no, dht);
+  //DHT d = dhtMap.getElement(pin_no);
+  //dhtMap.getValueOf(pin_no).begin();
 }
 
 float dht_read_temp(int pin_no) {
-  return dht.readTemperature();
+  DHT d = *(DHT*) dht;
+  return d.readTemperature();
 }
 
 float dht_read_hum(int pin_no) {
-  return dht.readHumidity();
+  return (*(DHT*) dht).readHumidity();
 }
-*/
+
 void init_spi(int cs_pin) {
   pinMode(cs_pin, OUTPUT);
   digitalWrite(cs_pin, HIGH);
