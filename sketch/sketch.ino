@@ -80,12 +80,12 @@ void init_spi(int cs_pin) {
   SPI.begin();
 }
 
-byte tx_rx_spi(int cs_pin, int b, bool cont) {
+int tx_rx_spi(int cs_pin, int b, bool cont) {
   digitalWrite(cs_pin, LOW);
   byte res = SPI.transfer((byte)b);
   if (!cont)
     digitalWrite(cs_pin, HIGH);
-  return res;
+  return (int)res;
 }
 
 void init_uart(int speed) {
