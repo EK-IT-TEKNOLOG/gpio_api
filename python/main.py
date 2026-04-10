@@ -111,16 +111,19 @@ def write_uart(bytes):
         Bridge.call('write_uart', int(b))
 
 def init_spi(cs_pin):
+    log(f'Initiaing SPI with CS on {cs_pin}')
     Bridge.call('init_spi', int(cs_pin))
 
 def tx_rx_spi(cs_pin, data):
     data = eval(data)
     res = []
+    log(f'Sending {data} on SPI with CS {cs_pin}')
     for i in range(len(data)-1):
-        r = Bridge.call('tx_rx_spi', int(cs_pin), data[i], True)
+        r = Bridge.call('tx_rx_spi', int(cs_pin), int(data[i]), True)
         res.append(r)
-    r = Bridge.call('tx_rx_spi', int(cs_pin), data[-1], False)
+    r = Bridge.call('tx_rx_spi', int(cs_pin), int(data[-1]), False)
     res.append(r)
+    log(f'Got this back: {res}')
     return res
         
 

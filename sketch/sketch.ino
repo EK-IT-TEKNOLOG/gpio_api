@@ -2,86 +2,6 @@
 #include <Wire.h>
 #include <SPI.h>
 #include "DHT.h"
-#include <Hashtable.h>
-
-#define HASH_SIZE 5 //Maxiumum of 5 DHTs
-
-class MyDht {
-  public:
-    MyDht();
-    DHT d;
-};
-
-/* Handle association */
-template<typename hash,typename map>
-class HashType {
-public:
-	HashType(){ reset(); }
-	
-	HashType(hash code,map value):hashCode(code),mappedValue(value){}
-	
-	void reset(){ hashCode = 0; mappedValue = 0; }
-	hash getHash(){ return hashCode; }
-	void setHash(hash code){ hashCode = code; }
-	map getValue(){ return mappedValue; }
-	void setValue(map value){ mappedValue = value; }
-	
-	HashType& operator()(hash code, map value){
-		setHash( code );
-		setValue( value );
-	}
-private:
-	hash hashCode;
-	map mappedValue;
-};
-
-/*
-Handle indexing and searches
-TODO - extend API
-*/
-template<typename hash,typename map>
-class HashMap {
-public:
-	HashMap(HashType<hash,map>* newMap,byte newSize){
-		hashMap = newMap;
-		size = newSize;
-		for (byte i=0; i<size; i++){
-			hashMap[i].reset();
-		}
-	}
-	
-	HashType<hash,map>& operator[](int x){
-		//TODO - bounds
-		return hashMap[x];
-	}
-	
-	byte getIndexOf( hash key ){
-		for (byte i=0; i<size; i++){
-			if (hashMap[i].getHash()==key){
-				return i;
-			}
-		}
-	}
-	map getValueOf( hash key ){
-		for (byte i=0; i<size; i++){
-			if (hashMap[i].getHash()==key){
-				return hashMap[i].getValue();
-			}
-		}
-	}
-	
-	void debug(){
-		for (byte i=0; i<size; i++){
-			Serial.print(hashMap[i].getHash());
-			Serial.print(" - ");
-			Serial.println(hashMap[i].getValue());
-		}
-	}
-
-private:
-	HashType<hash,map>* hashMap;
-	byte size;
-};
 
 void setup() {
   // put your setup code here, to run once:
@@ -112,6 +32,9 @@ void setup() {
   Bridge.provide("read_uart", read_uart);
   Bridge.provide("write_uart", write_uart);
   Bridge.provide("deinit_uart", deinit_uart);
+
+  Bridge.provide("init_spi", init_spi);
+  Bridge.provide("tx_rx_spi", tx_rx_spi);
 }
 
 void loop() {}
@@ -157,9 +80,9 @@ void init_spi(int cs_pin) {
   SPI.begin();
 }
 
-byte tx_rx_spi(int cs_pin, byte b, bool cont) {
+byte tx_rx_spi(int cs_pin, int b, bool cont) {
   digitalWrite(cs_pin, LOW);
-  byte res = SPI.transfer(b);
+  byte res = SPI.transfer((byte)b);
   if (!cont)
     digitalWrite(cs_pin, HIGH);
   return res;
