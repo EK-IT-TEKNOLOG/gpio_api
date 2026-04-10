@@ -98,7 +98,9 @@ void setup() {
   Bridge.provide("analog_write", analog_write_pin);
   Bridge.provide("analog_atten", set_atten);
   Bridge.provide("analog_write_res", set_write_res);
+  
   Bridge.provide("init_i2c", init_i2c);
+  Bridge.provide("scan_i2c", scan_i2c);
   Bridge.provide("start_write_i2c", start_write_i2c);
   Bridge.provide("end_write_i2c", end_write_i2c);
   Bridge.provide("byte_write_i2c", byte_write_i2c);
@@ -189,12 +191,28 @@ void init_i2c() {
   Wire.begin(); // I2C in UNO-style headers (D20, D21)
 }
 
+int scan_i2c(int a) {
+  byte error;
+
+  Wire.beginTransmission(a);
+  error = Wire.endTransmission();
+  return error;
+  /*
+  if (error == 0) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+  */
+}
+
 void start_write_i2c(int addr) {
   Wire.beginTransmission(addr);
 }
 
-void end_write_i2c(int addr) {
-  Wire.endTransmission();
+byte end_write_i2c() {
+  return Wire.endTransmission();
 }
 
 void byte_write_i2c(int b) {
