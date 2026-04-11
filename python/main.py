@@ -66,13 +66,16 @@ def scan_i2c():
             res.append(i)
     return res
 
-def pin_status(pin):
-    #res = Bridge.call("get_pin_state", int(pin))
-    #log(f'[+] GOT {res} from pin state on {pin}')
-    if pin in port_state:
-        return port_state[pin]
+def pin_status(pin, in_pin = False):
+    if in_pin:
+        res = Bridge.call("get_pin_state", int(pin))
+        log(f'[+] GOT {res} from pin state on {pin}')
+        return eval(res.text)
     else:
-        return False
+        if pin in port_state:
+            return port_state[pin]
+        else:
+            return False
 
 #input = 0
 #output = 1
@@ -143,7 +146,7 @@ ui = WebUI()
 ui.expose_api("GET", "/configure_pin/{pin_no}/{direction}", configure_pin)
 ui.expose_api("GET", "/pin_on/{pin}", pin_on)
 ui.expose_api("GET", "/pin_off/{pin}", pin_off)
-ui.expose_api("GET", "/pin_status/{pin}", pin_status)
+ui.expose_api("GET", "/pin_status/{pin}/{in_pin}", pin_status)
 
 ui.expose_api("GET", "/analog_read/{pin}", analog_read)
 ui.expose_api("GET", "/analog_write/{pin}/{value}", analog_write)
