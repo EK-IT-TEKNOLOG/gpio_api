@@ -35,6 +35,8 @@ void setup() {
 
   Bridge.provide("init_spi", init_spi);
   Bridge.provide("tx_rx_spi", tx_rx_spi);
+
+  Bridge.provide("test", test);
 }
 
 void loop() {}
@@ -74,10 +76,12 @@ float dht_read_hum(int pin_no) {
   return (*(DHT*) dht).readHumidity();
 }
 
-void init_spi(int cs_pin) {
+bool init_spi(int cs_pin) {
   pinMode(cs_pin, OUTPUT);
   digitalWrite(cs_pin, HIGH);
   SPI.begin();
+  SPI.beginTransaction(SPISettings(16000000, MSBFIRST, SPI_MODE0));
+  return true;
 }
 
 int tx_rx_spi(int cs_pin, int b, bool cont) {
@@ -205,4 +209,23 @@ uint8_t get_pin_state(int pin) {
 
 uint8_t get_pin_number() {
   return A0;
+}
+
+int test() {
+  uint8_t cs_pin = 10;
+  pinMode(cs_pin, OUTPUT);
+  digitalWrite(cs_pin, HIGH);
+  SPI.begin();
+  SPI.beginTransaction(SPISettings(16000000, MSBFIRST, SPI_MODE0));
+  delay(500);
+  digitalWrite(cs_pin, LOW);
+  delay(500);
+  byte res1 = SPI.transfer(65);
+  delay(500);
+  byte res2 = SPI.transfer(9);
+  delay(500);
+  byte res3 = SPI.transfer(0);
+  delay(500);
+  digitalWrite(cs_pin, HIGH);
+  return -19;
 }

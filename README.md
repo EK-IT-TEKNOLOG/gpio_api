@@ -35,3 +35,18 @@ cd uno_machine
 ```
 
 Now write your code. See the `test.py` as starting point.
+
+# Status
+
+## Working
+* Pin
+* PWM
+* ADC
+* I2C
+* UART
+* SPI (But it seems like a problem with the uno and not this code)
+
+## What is needed?
+* More test
+* Test of DHT11
+

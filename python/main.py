@@ -85,7 +85,7 @@ def configure_pin(pin_no, direction):
     return a
 
 def test(hest):
-    res = Bridge.call("get_pin_number_from_name")
+    res = Bridge.call("test")
     #print('PRINTET HEST '+str(hest)+' '+str(type(hest)))
     return 'HEST '+str(res)+' '+str(type(res))
 
@@ -112,7 +112,9 @@ def write_uart(bytes):
 
 def init_spi(cs_pin):
     log(f'Initiaing SPI with CS on {cs_pin}')
-    Bridge.call('init_spi', int(cs_pin))
+    res = Bridge.call('init_spi', int(cs_pin))
+    log(f'Initiating status: {res}')
+    return res
 
 def tx_rx_spi(cs_pin, data):
     data = eval(data)
