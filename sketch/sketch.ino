@@ -2,6 +2,7 @@
 #include <Wire.h>
 #include <SPI.h>
 #include "DHT.h"
+#include <Adafruit_NeoPixel.h>
 
 void setup() {
   // put your setup code here, to run once:
@@ -36,6 +37,11 @@ void setup() {
   Bridge.provide("init_spi", init_spi);
   Bridge.provide("tx_rx_spi", tx_rx_spi);
 
+  Bridge.provide("init_neopixel", init_neopixel);
+  Bridge.provide("set_pixel_color", set_pixel_color);
+  Bridge.provide("show_colors", show_colors);
+  Bridge.provide("clear_colors", clear_colors);
+  
   Bridge.provide("test", test);
 }
 
@@ -46,9 +52,28 @@ void loop() {}
 //Hashtable<int, DHT> dhtMap;
 
 void* dht;
+Adafruit_NeoPixel* WS2812B;
 
 //DHT dht = dht11(1,11);
 
+void init_neopixel(int num_pixels, int led_pin) {
+  WS2812B = new Adafruit_NeoPixel(num_pixels, led_pin, NEO_GRB+NEO_KHZ800);
+  WS2812B->begin();
+  //WS2812B.clear();
+}
+
+void set_pixel_color(int pixel, int r, int g, int b) {
+  WS2812B->setPixelColor(pixel, WS2812B->Color(r, g, b));
+}
+
+void show_colors() {
+  WS2812B->show();
+}
+
+void clear_colors() {
+  WS2812B->clear();
+  WS2812B->show();
+}
 /*
 * Define types of sensors. *
 static const uint8_t DHT11{11};  **< DHT TYPE 11
@@ -212,20 +237,25 @@ uint8_t get_pin_number() {
 }
 
 int test() {
-  uint8_t cs_pin = 10;
-  pinMode(cs_pin, OUTPUT);
-  digitalWrite(cs_pin, HIGH);
-  SPI.begin();
-  SPI.beginTransaction(SPISettings(16000000, MSBFIRST, SPI_MODE0));
-  delay(500);
-  digitalWrite(cs_pin, LOW);
-  delay(500);
-  byte res1 = SPI.transfer(65);
-  delay(500);
-  byte res2 = SPI.transfer(9);
-  delay(500);
-  byte res3 = SPI.transfer(0);
-  delay(500);
-  digitalWrite(cs_pin, HIGH);
-  return -19;
+  /*
+  WS2812B = new Adafruit_NeoPixel(2,4, NEO_GRB + NEO_KHZ800);
+  WS2812B->begin();
+  delay(1000);
+  WS2812B->setPixelColor(0, WS2812B->Color(0,0,255));
+  delay(1000);
+  WS2812B->show();
+  delay(3000);
+  WS2812B->clear();
+  delay(1000);
+*/
+  Adafruit_NeoPixel WS2812B(2,4, NEO_GRB + NEO_KHZ800);
+  WS2812B.begin();
+  delay(1000);
+  WS2812B.setPixelColor(0, WS2812B.Color(0,0,255));
+  delay(1000);
+  WS2812B.show();
+  delay(3000);
+  WS2812B.clear();
+  delay(1000);
+  return 0;
 }

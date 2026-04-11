@@ -141,6 +141,24 @@ def dht_read_temp(pin_no):
 def dht_read_hum(pin_no):
     Bridge.call('dht_read_hum', int(pin_no))
 
+def init_neopixel(num_pixels, led_pin):
+    Bridge.call('init_neopixel', int(num_pixels), int(led_pin))
+
+def set_pixel_color(pixels):
+    pixels = eval(pixels)
+    log(f'Got this {pixels}')
+    log(f'Got this {type(pixels)}')
+    log(f'Got this {type(pixels[0])}')
+    log(f'Got this {type(pixels[0][0])}')
+    for p in range(len(pixels)):
+        Bridge.call('set_pixel_color', int(p), int(pixels[p][0]), int(pixels[p][1]), int(pixels[p][2]))
+
+def show_colors():
+    Bridge.call('show_colors')
+
+def clear_colors():
+    Bridge.call('clear_colors')
+
 # Initialize WebUI
 ui = WebUI()
 ui.expose_api("GET", "/configure_pin/{pin_no}/{direction}", configure_pin)
@@ -170,6 +188,11 @@ ui.expose_api("GET", "/tx_rx_spi/{cs_pin}/{data}", tx_rx_spi)
 ui.expose_api("GET", "/init_dht/{pin_no}/{dht_type}", init_dht)
 ui.expose_api('GET', '/dht_read_temp/{pin_no}', dht_read_temp)
 ui.expose_api('GET', '/dht_read_hum/{pin_no}', dht_read_hum)
+
+ui.expose_api('GET', '/init_neopixel/{num_pixels}/{led_pin}', init_neopixel)
+ui.expose_api('GET', '/set_pixel_color/{pixels}', set_pixel_color)
+ui.expose_api('GET', '/show_colors', show_colors)
+ui.expose_api('GET', '/clear_colors', clear_colors)
 
 ui.expose_api("GET", "/test/{hest}", test)
 

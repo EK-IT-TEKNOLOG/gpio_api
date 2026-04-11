@@ -14,5 +14,6 @@ profiles:
       - DHT sensor library (1.4.7)
       - Hashtable (1.0.1)
       - dependency: SimpleVector (1.0.5)
+      - Adafruit NeoPixel (1.15.4)
 
 default_profile: default
