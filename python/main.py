@@ -133,13 +133,20 @@ def tx_rx_spi(cs_pin, data):
         
 
 def init_dht(pin_no, dht_type):
+    log(f'Initiang DHT on pin {pin_no} with type {dht_type}')
     Bridge.call('init_dht', int(pin_no), int(dht_type))
 
 def dht_read_temp(pin_no):
-    Bridge.call('dht_read_temp', int(pin_no))
+    res = Bridge.call('read_dht_temp', int(pin_no))
+    log(f'Got temp: {res}')
+    str(res)
+    return res
 
 def dht_read_hum(pin_no):
-    Bridge.call('dht_read_hum', int(pin_no))
+    res = Bridge.call('read_dht_hum', int(pin_no))
+    log(f'Got temp: {res}')
+    str(res)
+    return res
 
 def init_neopixel(num_pixels, led_pin):
     Bridge.call('init_neopixel', int(num_pixels), int(led_pin))

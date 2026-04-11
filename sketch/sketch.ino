@@ -41,7 +41,11 @@ void setup() {
   Bridge.provide("set_pixel_color", set_pixel_color);
   Bridge.provide("show_colors", show_colors);
   Bridge.provide("clear_colors", clear_colors);
-  
+ 
+  Bridge.provide("init_dht", init_dht);
+  Bridge.provide("read_dht_temp", dht_read_temp);
+  Bridge.provide("read_dht_hum", dht_read_hum);
+
   Bridge.provide("test", test);
 }
 
@@ -51,7 +55,7 @@ void loop() {}
 //HashMap<int,DHT> dhtMap = HashMap<int,DHT>( hashRawArray , HASH_SIZE ); 
 //Hashtable<int, DHT> dhtMap;
 
-void* dht;
+DHT* dht;
 Adafruit_NeoPixel* WS2812B;
 
 //DHT dht = dht11(1,11);
@@ -84,21 +88,19 @@ static const uint8_t AM2301{21}; **< AM2301 *
 */
 
 void init_dht(int pin_no, int dht_type) {
-  DHT d(pin_no, dht_type);
-  d.begin();
-  dht = &d;
+  dht = new DHT(pin_no, dht_type);
+  dht->begin();
   //dhtMap[0](pin_no, dht);
   //DHT d = dhtMap.getElement(pin_no);
   //dhtMap.getValueOf(pin_no).begin();
 }
 
 float dht_read_temp(int pin_no) {
-  DHT d = *(DHT*) dht;
-  return d.readTemperature();
+  return dht->readTemperature();
 }
 
 float dht_read_hum(int pin_no) {
-  return (*(DHT*) dht).readHumidity();
+  return dht->readHumidity();
 }
 
 bool init_spi(int cs_pin) {
@@ -236,7 +238,7 @@ uint8_t get_pin_number() {
   return A0;
 }
 
-int test() {
+float test() {
   /*
   WS2812B = new Adafruit_NeoPixel(2,4, NEO_GRB + NEO_KHZ800);
   WS2812B->begin();
@@ -248,14 +250,23 @@ int test() {
   WS2812B->clear();
   delay(1000);
 */
+  /*
   Adafruit_NeoPixel WS2812B(2,4, NEO_GRB + NEO_KHZ800);
   WS2812B.begin();
   delay(1000);
   WS2812B.setPixelColor(0, WS2812B.Color(0,0,255));
+  WS2812B.setPixelColor(1, WS2812B.Color(255,0,0));
   delay(1000);
   WS2812B.show();
   delay(3000);
   WS2812B.clear();
   delay(1000);
   return 0;
+  */
+  DHT dht(4, DHT11);
+  dht.begin();
+  delay(2000);
+  float h = dht.readHumidity();
+  float t = dht.readTemperature();
+  return t;
 }
