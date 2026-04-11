@@ -144,7 +144,7 @@ def dht_read_temp(pin_no):
 
 def dht_read_hum(pin_no):
     res = Bridge.call('read_dht_hum', int(pin_no))
-    log(f'Got temp: {res}')
+    log(f'Got hum: {res}')
     str(res)
     return res
 
