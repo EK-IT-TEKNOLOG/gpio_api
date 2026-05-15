@@ -138,7 +138,7 @@ void write_uart(byte b) {
 }
 
 void deinit_uart() {
-  Serial.end();
+  //Serial.end();
 }
 
 void init_i2c() {

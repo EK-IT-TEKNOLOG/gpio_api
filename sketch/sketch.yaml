@@ -4,12 +4,6 @@ profiles:
     platforms:
       - platform: arduino:zephyr
     libraries:
-      - Arduino_RouterBridge (0.3.0)
-      - dependency: Arduino_RPClite (0.2.1)
-      - dependency: ArxContainer (0.7.0)
-      - dependency: ArxTypeTraits (0.3.2)
-      - dependency: DebugLog (0.8.4)
-      - dependency: MsgPack (0.4.2)
       - dependency: Adafruit Unified Sensor (1.1.15)
       - DHT sensor library (1.4.7)
       - Hashtable (1.0.1)
